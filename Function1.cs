@@ -16,7 +16,7 @@ namespace FunctionbeerAPI
     {
         private static readonly string connectionString = "Server=tcp:m3hkanamofunctiondb.database.windows.net,1433;Initial Catalog=m3h-kanamo-functionDB;Persist Security Info=False;User ID=yusaku0755;Password=Kanamo0612;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-        // ƒŠƒNƒGƒXƒgƒf[ƒ^‚ÌŒ^‚ğ’è‹`‚·‚éƒNƒ‰ƒX
+        // ãƒªã‚¯ã‚¨ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã®å‹ã‚’å®šç¾©ã™ã‚‹ã‚¯ãƒ©ã‚¹
         public class CalculateRequest
         {
             public decimal TotalAmount { get; set; }
@@ -48,11 +48,11 @@ namespace FunctionbeerAPI
                 {
                     conn.Open();
 
-                    // Nomikai ƒe[ƒuƒ‹‚Ì ID —ñ‚ğŠm”F
+                    // Nomikai ãƒ†ãƒ¼ãƒ–ãƒ«ã® ID åˆ—ã‚’ç¢ºèª
                     var checkQuery = "SELECT COUNT(*) FROM Nomikai WHERE ID = @ID";
                     using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                     {
-                        checkCmd.Parameters.AddWithValue("@ID", data.EventID);  // @ID ‚É CalculateRequest ‚©‚ç‚Ì’l‚ğİ’è
+                        checkCmd.Parameters.AddWithValue("@ID", data.EventID);  // @ID ã« CalculateRequest ã‹ã‚‰ã®å€¤ã‚’è¨­å®š
                         int count = (int)await checkCmd.ExecuteScalarAsync();
                         if (count == 0)
                         {
@@ -60,7 +60,7 @@ namespace FunctionbeerAPI
                         }
                     }
 
-                    // Nomikai ƒe[ƒuƒ‹‚Ö‚Ì INSERT ‚Ü‚½‚Í UPDATE ˆ—
+                    // Nomikai ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ã® INSERT ã¾ãŸã¯ UPDATE å‡¦ç†
                     var updateQuery = "UPDATE Nomikai SET amount = @Amount WHERE ID = @EventID";
                     using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
                     {
@@ -193,10 +193,10 @@ namespace FunctionbeerAPI
                 return new BadRequestObjectResult(new { Message = "Amount must be greater than 0." });
             }
 
-            // Q‰ÁÒ‚ğƒJƒ“ƒ}‚Å•ªŠ„‚µAŠeQ‰ÁÒ‚ÌƒgƒŠƒ~ƒ“ƒO
-            var participants = data.Participants.Split(new[] { 'A' }, StringSplitOptions.RemoveEmptyEntries);
+            // å‚åŠ è€…ã‚’ã‚«ãƒ³ãƒã§åˆ†å‰²ã—ã€å„å‚åŠ è€…ã®ãƒˆãƒªãƒŸãƒ³ã‚°
+            var participants = data.Participants.Split(new[] { "ã€" }, StringSplitOptions.RemoveEmptyEntries);
 
-            // ‹àŠz‚ğl”‚ÅŠ„‚é
+            // é‡‘é¡ã‚’äººæ•°ã§å‰²ã‚‹
             decimal amountPerParticipant = data.Amount / (decimal)participants.Length;
 
             try
@@ -258,7 +258,7 @@ namespace FunctionbeerAPI
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT * FROM Nomikai WHERE 1=1"; // ‰Šú‚ÌƒNƒGƒŠ•”•ª
+                    string query = "SELECT * FROM Nomikai WHERE 1=1"; // åˆæœŸã®ã‚¯ã‚¨ãƒªéƒ¨åˆ†
 
                     if (!string.IsNullOrEmpty(eventName))
                     {
@@ -326,7 +326,7 @@ namespace FunctionbeerAPI
         {
             log.LogInformation("UpdatePaymentFlags function processed a request.");
 
-            // ƒŠƒNƒGƒXƒgƒ{ƒfƒB‚ğ“Ç‚İ‚Ş
+            // ãƒªã‚¯ã‚¨ã‚¹ãƒˆãƒœãƒ‡ã‚£ã‚’èª­ã¿è¾¼ã‚€
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var updates = JsonConvert.DeserializeObject<List<PaymentFlagUpdateRequest>>(requestBody);
 
@@ -372,14 +372,14 @@ namespace FunctionbeerAPI
             return new OkObjectResult(response);
         }
 
-        // x•¥‚¢ƒtƒ‰ƒOXVƒŠƒNƒGƒXƒg‚ÌƒNƒ‰ƒX’è‹`
+        // æ”¯æ‰•ã„ãƒ•ãƒ©ã‚°æ›´æ–°ãƒªã‚¯ã‚¨ã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹å®šç¾©
         public class PaymentFlagUpdateRequest
         {
             public int Id { get; set; }
             public bool PaymentFlag { get; set; }
         }
 
-        // CORS İ’è‚ğ“K—p‚·‚éƒwƒ‹ƒp[ƒƒ\ƒbƒh
+        // CORS è¨­å®šã‚’é©ç”¨ã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰
         private static IActionResult CreateCorsResponse(IActionResult result, HttpResponse response)
         {
             response.Headers.Add("Access-Control-Allow-Origin", "*");
