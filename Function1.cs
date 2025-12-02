@@ -14,7 +14,9 @@ namespace FunctionbeerAPI
 {
     public static class Function1
     {
-        private static readonly string connectionString = "Server=tcp:m3hkanamofunctiondb.database.windows.net,1433;Initial Catalog=m3h-kanamo-functionDB;Persist Security Info=False;User ID=yusaku0755;Password=Kanamo0612;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        // 環境変数から接続文字列を取得
+private static readonly string connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
+
 
         // リクエストデータの型を定義するクラス
         public class CalculateRequest
