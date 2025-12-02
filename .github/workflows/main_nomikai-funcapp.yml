@@ -34,10 +34,11 @@ jobs:
           popd
       
       - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
+        uses: Azure/functions-action@v2
         id: fa
         with:
           app-name: 'nomikai-funcapp'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_12B4A53F9AE14507B5338BCEF33BD5C9 }}
