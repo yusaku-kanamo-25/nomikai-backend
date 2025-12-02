@@ -26,6 +26,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      # ★★★ 修正文：output フォルダを削除 ★★★
+      - name: Clean output
+        shell: pwsh
+        run: Remove-Item -Recurse -Force output -ErrorAction SilentlyContinue
+
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh
         run: |
@@ -40,6 +45,4 @@ jobs:
           app-name: 'nomikai-funcapp'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_12B4A53F9AE14507B5338BCEF33BD5C9 }}
-
